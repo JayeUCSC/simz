@@ -740,7 +740,7 @@ public class DBOperations {
     ResultSet getTodayStockQty(int id) { // getting values changed by me
         try {
             con = (Connection) DriverManager.getConnection(url, username, password);
-            String query = "SELECT currentQuantity,expiryDate FROM today_stock WHERE productID = ?";
+            String query = "SELECT currentQuantity,totalreceivedQuantity,expiryDate FROM today_stock WHERE productID = ?";
             pst = (PreparedStatement) con.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
