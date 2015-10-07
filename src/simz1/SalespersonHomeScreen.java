@@ -13,12 +13,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import static simz1.LoginFrame1.spi;
 import static simz1.ManagerHomeScreen.resizeImageIcon;
@@ -29,11 +31,12 @@ import static simz1.ManagerHomeScreen.resizeImageIcon;
  */
 public class SalespersonHomeScreen extends javax.swing.JFrame {
     DBOperations dbOps = new DBOperations();
-    
+    AutoSuggest as = new AutoSuggest();
     Vector<String> v = new Stack<String>();
     JTextField tx;
     private boolean hide_flag = false;
-
+    int rawNo=0;
+    
     public void autoSuggest() {
         jComboBoxSearch.removeAllItems();
         try {
@@ -125,6 +128,8 @@ public class SalespersonHomeScreen extends javax.swing.JFrame {
     public SalespersonHomeScreen() {
         initComponents();
         this.autoSuggest();
+        as.autoSuggest(ItemSelecter);
+        ItemSelecter.setSelectedIndex(-1);
         jComboBoxSearch.setSelectedIndex(-1);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo1.jpg")));
     }
@@ -157,45 +162,19 @@ public class SalespersonHomeScreen extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         lablePic = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
-        jCheckBox8 = new javax.swing.JCheckBox();
-        jCheckBox9 = new javax.swing.JCheckBox();
-        jCheckBox10 = new javax.swing.JCheckBox();
-        jCheckBox11 = new javax.swing.JCheckBox();
-        jCheckBox12 = new javax.swing.JCheckBox();
-        jCheckBox13 = new javax.swing.JCheckBox();
-        jCheckBox14 = new javax.swing.JCheckBox();
-        jCheckBox17 = new javax.swing.JCheckBox();
-        jCheckBox18 = new javax.swing.JCheckBox();
-        jCheckBox19 = new javax.swing.JCheckBox();
-        jCheckBox20 = new javax.swing.JCheckBox();
-        jCheckBox21 = new javax.swing.JCheckBox();
-        jCheckBox22 = new javax.swing.JCheckBox();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        BillingTable = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
-        jCheckBox29 = new javax.swing.JCheckBox();
-        jCheckBox30 = new javax.swing.JCheckBox();
-        jCheckBox31 = new javax.swing.JCheckBox();
-        jCheckBox32 = new javax.swing.JCheckBox();
-        jCheckBox33 = new javax.swing.JCheckBox();
+        txtTotal = new javax.swing.JTextField();
+        txtCash = new javax.swing.JTextField();
+        ItemSelecter = new javax.swing.JComboBox();
+        amount = new javax.swing.JTextField();
+        btnOK = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        btnBalance = new javax.swing.JButton();
+        txtBalance = new javax.swing.JTextField();
+        total = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -353,10 +332,10 @@ public class SalespersonHomeScreen extends javax.swing.JFrame {
 
         jTabbedPane1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jTable2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        BillingTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        BillingTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -372,182 +351,134 @@ public class SalespersonHomeScreen extends javax.swing.JFrame {
             new String [] {
                 "Product Code", "Product Name", "Quantity", "Price"
             }
-        ));
-        jTable2.setGridColor(new java.awt.Color(51, 51, 51));
-        jTable2.setRowHeight(20);
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false
+            };
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 284, 904, 147));
-
-        jCheckBox1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox1.setText("Fish Chinese Roll");
-        jPanel1.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 35, -1, -1));
-
-        jLabel9.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
-        jLabel9.setText("Shorteats");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 16, -1, -1));
-
-        jLabel10.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
-        jLabel10.setText("Breads");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 16, -1, -1));
-
-        jLabel11.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
-        jLabel11.setText("Cakes");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 16, -1, -1));
-
-        jLabel12.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
-        jLabel12.setText("Sweets");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(677, 16, -1, -1));
-
-        jLabel13.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
-        jLabel13.setText("Drinks");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(852, 16, -1, -1));
-
-        jCheckBox2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox2.setText("Cheese Cake");
-        jPanel1.add(jCheckBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 35, -1, -1));
-
-        jCheckBox3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox3.setText("Dhoughnut");
-        jPanel1.add(jCheckBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(664, 35, -1, -1));
-
-        jCheckBox4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox4.setText("Fish Sandwitch");
-        jCheckBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox4ActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jPanel1.add(jCheckBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 35, 116, -1));
-
-        jCheckBox5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox5.setText("Iced Coffee");
-        jPanel1.add(jCheckBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(836, 35, -1, -1));
-
-        jCheckBox6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox6.setText("Cream Bun");
-        jPanel1.add(jCheckBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(664, 58, -1, -1));
-
-        jCheckBox7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox7.setText("Pineapple Tart");
-        jPanel1.add(jCheckBox7, new org.netbeans.lib.awtextra.AbsoluteConstraints(664, 81, -1, -1));
-
-        jCheckBox8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox8.setText("Chocolate Cake");
-        jPanel1.add(jCheckBox8, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 58, -1, -1));
-
-        jCheckBox9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox9.setText("Date Cake");
-        jPanel1.add(jCheckBox9, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 81, -1, -1));
-
-        jCheckBox10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox10.setText("Lime Juice");
-        jPanel1.add(jCheckBox10, new org.netbeans.lib.awtextra.AbsoluteConstraints(836, 58, -1, -1));
-
-        jCheckBox11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox11.setText("Orange Juice");
-        jPanel1.add(jCheckBox11, new org.netbeans.lib.awtextra.AbsoluteConstraints(836, 81, -1, -1));
-
-        jCheckBox12.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox12.setText("Fish Cutlet");
-        jPanel1.add(jCheckBox12, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 58, -1, -1));
-
-        jCheckBox13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox13.setText("Fish Pastry");
-        jPanel1.add(jCheckBox13, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 81, -1, -1));
-
-        jCheckBox14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox14.setText("Fish Rotty");
-        jPanel1.add(jCheckBox14, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 105, -1, -1));
-
-        jCheckBox17.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox17.setText("Omlet Sandwitch");
-        jCheckBox17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox17ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jCheckBox17, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 81, -1, -1));
-
-        jCheckBox18.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox18.setText("Egg Sandwitch");
-        jPanel1.add(jCheckBox18, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 58, 116, -1));
-
-        jCheckBox19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox19.setText("Fish Bun");
-        jPanel1.add(jCheckBox19, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 128, -1, -1));
-
-        jCheckBox20.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox20.setText("Fish Hot Dog");
-        jPanel1.add(jCheckBox20, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 151, -1, -1));
-
-        jCheckBox21.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox21.setText("Vegetable Chinese Roll");
-        jPanel1.add(jCheckBox21, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 174, -1, -1));
-
-        jCheckBox22.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox22.setText("Vegetable Cutlet");
-        jCheckBox22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox22ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jCheckBox22, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 197, -1, -1));
-
-        jToggleButton1.setText("Calculate Total");
-        jPanel1.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 434, -1, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(691, 437, 221, -1));
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(691, 463, 221, 25));
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(691, 494, 221, -1));
-
-        jButton3.setText("Balance");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 491, 103, -1));
+        BillingTable.setGridColor(new java.awt.Color(51, 51, 51));
+        BillingTable.setRowHeight(20);
+        jScrollPane4.setViewportView(BillingTable);
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Cash");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 468, 103, -1));
 
-        jCheckBox29.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox29.setText("Beef Sandwitch");
-        jCheckBox29.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox29ActionPerformed(evt);
+        txtTotal.setEditable(false);
+        txtTotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotal.setText("0");
+
+        txtCash.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCashKeyPressed(evt);
             }
         });
-        jPanel1.add(jCheckBox29, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 105, -1, -1));
 
-        jCheckBox30.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox30.setText("Vegetable Sandwitch");
-        jCheckBox30.addActionListener(new java.awt.event.ActionListener() {
+        ItemSelecter.setEditable(true);
+        ItemSelecter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ItemSelecter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox30ActionPerformed(evt);
+                ItemSelecterActionPerformed(evt);
             }
         });
-        jPanel1.add(jCheckBox30, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 128, -1, -1));
 
-        jCheckBox31.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox31.setText("Chicken Cutlet");
-        jCheckBox31.addActionListener(new java.awt.event.ActionListener() {
+        amount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox31ActionPerformed(evt);
+                amountActionPerformed(evt);
             }
         });
-        jPanel1.add(jCheckBox31, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 220, -1, -1));
-
-        jCheckBox32.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox32.setText("Chicken Chinese Roll");
-        jCheckBox32.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox32ActionPerformed(evt);
+        amount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                amountKeyPressed(evt);
             }
         });
-        jPanel1.add(jCheckBox32, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 243, -1, -1));
 
-        jCheckBox33.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jCheckBox33.setText("Fruit Cake");
-        jPanel1.add(jCheckBox33, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 104, -1, -1));
+        btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
-        jTabbedPane1.addTab("Transactions", jPanel1);
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText(" Quantity");
+
+        btnBalance.setText("Balance");
+        btnBalance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBalanceActionPerformed(evt);
+            }
+        });
+
+        total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total.setText("Total");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(ItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(amount, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnOK)
+                        .addGap(0, 438, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(273, 273, 273)
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBalance, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                    .addComponent(total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                    .addComponent(txtCash)
+                    .addComponent(txtBalance))
+                .addGap(31, 31, 31))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(amount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(txtCash, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBalance)
+                    .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Transactions  ", jPanel3);
 
         jLabel8.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 12)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -610,7 +541,7 @@ public class SalespersonHomeScreen extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jComboBoxSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 840, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE))
                 .addGap(81, 81, 81))
         );
         jPanel2Layout.setVerticalGroup(
@@ -691,33 +622,219 @@ public class SalespersonHomeScreen extends javax.swing.JFrame {
         spf.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jCheckBox17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox17ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox17ActionPerformed
+    private void txtCashKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCashKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String amount = txtTotal.getText();
+            if (txtCash.getText().equals("") || txtTotal.getText().equals("")){
+                JOptionPane.showMessageDialog(this, "No text feild should be empty");
+            }else{
+                String payment = txtCash.getText();
+                int paymenti = Integer.parseInt(payment);
+                int amounti = Integer.parseInt(amount);
+                int balance = paymenti-amounti;
+                txtBalance.setText(String.valueOf(balance));
+                int result = JOptionPane.showConfirmDialog(null, "Your balance is Rs "+ String.valueOf(balance)+" Print the bill? ",null, JOptionPane.YES_NO_OPTION);
+                if(result == JOptionPane.YES_OPTION) {
+                   java.util.Date date = new java.util.Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                    String time = sdf.format(date);
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy:MM:dd");
+                    String today = sdf2.format(date);
+                    dbOps.addTransaction(time, today);
+                    int billNo=dbOps.getBillID(time, today);
+                    
+                    for (int i=0;i<rawNo;i++){
+                        int id = Integer.parseInt(BillingTable.getValueAt(i,0).toString());
+                        int quantity = Integer.parseInt(BillingTable.getValueAt(i, 2).toString());
+                        
+                        dbOps.addTransaction_2(billNo, id, quantity);
+                    }
+                   for (int i = 0; i < BillingTable.getRowCount(); i++) {
+                    for (int j = 0; j < 4; j++) {
+                        BillingTable.setValueAt("", i, j);
+                    }
+                   } 
+                   txtTotal.setText("0");
+                   txtCash.setText("");
+                   txtBalance.setText("");
+                   rawNo=0;
+                }
+                
+            }
+        }
+    }//GEN-LAST:event_txtCashKeyPressed
 
-    private void jCheckBox22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox22ActionPerformed
+    private void ItemSelecterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSelecterActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox22ActionPerformed
+    }//GEN-LAST:event_ItemSelecterActionPerformed
 
-    private void jCheckBox29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox29ActionPerformed
+    private void amountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox29ActionPerformed
+    }//GEN-LAST:event_amountActionPerformed
 
-    private void jCheckBox30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox30ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox30ActionPerformed
+    private void amountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_amountKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int quantity = 0;
+            if (amount.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "First you should select an item");
+            } else if (ItemSelecter.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Quantity field cannot be null");
+            } else {
+                quantity = Integer.parseInt(amount.getText().toString());
+                try {
+                    String txt = (String) ItemSelecter.getEditor().getItem();
+                    ResultSet rst = dbOps.getPID(txt);
 
-    private void jCheckBox31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox31ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox31ActionPerformed
+                    while (rst.next()) {
+                        if (rawNo != 0) {
+                            for (int i = 0; i < rawNo; i++) {
+                                if (Integer.parseInt(BillingTable.getValueAt(i, 0).toString()) == rst.getInt(1)) {
+                                    int oldQuantity= Integer.parseInt(BillingTable.getValueAt(i, 2).toString());
+                                    int a = rst.getInt(3);
+                                    BillingTable.setValueAt(a * quantity, i, 3);
+                                    String c = rst.getString(1);
+                                    BillingTable.setValueAt(c, i, 0);
+                                    String b = rst.getString(2);
+                                    BillingTable.setValueAt(b, i, 1);
+                                    BillingTable.setValueAt(quantity, i, 2);
+                                    txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity-(oldQuantity*a)));
+                                    ItemSelecter.setSelectedIndex(-1);
+                                    amount.setText(null);
+                                    return;
+                                }
+                            }
+                            int a = rst.getInt(3);
+                            BillingTable.setValueAt(a * quantity, rawNo, 3);
+                            txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity));
+                            String c = rst.getString(1);
+                            BillingTable.setValueAt(c, rawNo, 0);
+                            String b = rst.getString(2);
+                            BillingTable.setValueAt(b, rawNo, 1);
+                            BillingTable.setValueAt(quantity, rawNo, 2);
+                            rawNo++;
 
-    private void jCheckBox32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox32ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox32ActionPerformed
+                        } else {
+                            int a = rst.getInt(3);
+                            BillingTable.setValueAt(a * quantity, rawNo, 3);
+                            txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity));
+                            String c = rst.getString(1);
+                            BillingTable.setValueAt(c, rawNo, 0);
+                            String b = rst.getString(2);
+                            BillingTable.setValueAt(b, rawNo, 1);
+                            BillingTable.setValueAt(quantity, rawNo, 2);
+                            rawNo++;
+                        }
 
-    private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox4ActionPerformed
+                    }
+                    ItemSelecter.setSelectedIndex(-1);
+                    amount.setText(null);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error occured while the transaction");
+                }
+            }
+        }
+    }//GEN-LAST:event_amountKeyPressed
+
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        int quantity = 0;
+        if (amount.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "First you should select an item");
+        } else if (ItemSelecter.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Quantity field cannot be null");
+        } else {
+            quantity = Integer.parseInt(amount.getText().toString());
+            try {
+                String txt = (String) ItemSelecter.getEditor().getItem();
+                ResultSet rst = dbOps.getPID(txt);
+
+                while (rst.next()) {
+                    if (rawNo != 0) {
+                        for (int i = 0; i < rawNo; i++) {
+                            if (Integer.parseInt(BillingTable.getValueAt(i, 0).toString()) == rst.getInt(1)) {
+                                int oldQuantity= Integer.parseInt(BillingTable.getValueAt(i, 2).toString());
+                                int a = rst.getInt(3);
+                                BillingTable.setValueAt(a * quantity, i, 3);
+                                String c = rst.getString(1);
+                                BillingTable.setValueAt(c, i, 0);
+                                String b = rst.getString(2);
+                                BillingTable.setValueAt(b, i, 1);
+                                BillingTable.setValueAt(quantity, i, 2);
+                                txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity-(oldQuantity*a)));
+                                ItemSelecter.setSelectedIndex(-1);
+                                amount.setText(null);
+                                return;
+                            }
+                        }
+                        int a = rst.getInt(3);
+                        BillingTable.setValueAt(a * quantity, rawNo, 3);
+                        txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity));
+                        String c = rst.getString(1);
+                        BillingTable.setValueAt(c, rawNo, 0);
+                        String b = rst.getString(2);
+                        BillingTable.setValueAt(b, rawNo, 1);
+                        BillingTable.setValueAt(quantity, rawNo, 2);
+                        rawNo++;
+
+                    } else {
+                        int a = rst.getInt(3);
+                        BillingTable.setValueAt(a * quantity, rawNo, 3);
+                        txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity));
+                        String c = rst.getString(1);
+                        BillingTable.setValueAt(c, rawNo, 0);
+                        String b = rst.getString(2);
+                        BillingTable.setValueAt(b, rawNo, 1);
+                        BillingTable.setValueAt(quantity, rawNo, 2);
+                        rawNo++;
+                    }
+
+                }
+                ItemSelecter.setSelectedIndex(-1);
+                amount.setText(null);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error occured while the transaction");
+            }
+        }
+    }//GEN-LAST:event_btnOKActionPerformed
+
+    private void btnBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBalanceActionPerformed
+        String amount = txtTotal.getText();
+        if (txtCash.getText().equals("") || txtTotal.getText().equals("")){
+                JOptionPane.showMessageDialog(this, "No text feild should be empty");
+            }else{
+                String payment = txtCash.getText();
+                int paymenti = Integer.parseInt(payment);
+                int amounti = Integer.parseInt(amount);
+                int balance = paymenti-amounti;
+                txtBalance.setText(String.valueOf(balance));
+                int result = JOptionPane.showConfirmDialog(null, "Your balance is Rs "+ String.valueOf(balance)+" Print the bill? ",null, JOptionPane.YES_NO_OPTION);
+                if(result == JOptionPane.YES_OPTION) {
+                   java.util.Date date = new java.util.Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                    String time = sdf.format(date);
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy:MM:dd");
+                    String today = sdf2.format(date);
+                    dbOps.addTransaction(time, today);
+                    int billNo=dbOps.getBillID(time, today);
+                    
+                    for (int i=0;i<rawNo;i++){
+                        int id = Integer.parseInt(BillingTable.getValueAt(i,0).toString());
+                        int quantity = Integer.parseInt(BillingTable.getValueAt(i, 2).toString());
+                        
+                        dbOps.addTransaction_2(billNo, id, quantity);
+                    }
+                   for (int i = 0; i < BillingTable.getRowCount(); i++) {
+                    for (int j = 0; j < 4; j++) {
+                        BillingTable.setValueAt("", i, j);
+                    }
+                   } 
+                   txtTotal.setText("0");
+                   txtCash.setText("");
+                   txtBalance.setText("");
+                   rawNo=0;
+                }
+                
+            }
+    }//GEN-LAST:event_btnBalanceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -755,42 +872,18 @@ public class SalespersonHomeScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable BillingTable;
+    private javax.swing.JComboBox ItemSelecter;
+    private javax.swing.JTextField amount;
+    private javax.swing.JButton btnBalance;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnLogOut1;
+    private javax.swing.JButton btnOK;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox10;
-    private javax.swing.JCheckBox jCheckBox11;
-    private javax.swing.JCheckBox jCheckBox12;
-    private javax.swing.JCheckBox jCheckBox13;
-    private javax.swing.JCheckBox jCheckBox14;
-    private javax.swing.JCheckBox jCheckBox17;
-    private javax.swing.JCheckBox jCheckBox18;
-    private javax.swing.JCheckBox jCheckBox19;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox20;
-    private javax.swing.JCheckBox jCheckBox21;
-    private javax.swing.JCheckBox jCheckBox22;
-    private javax.swing.JCheckBox jCheckBox29;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox30;
-    private javax.swing.JCheckBox jCheckBox31;
-    private javax.swing.JCheckBox jCheckBox32;
-    private javax.swing.JCheckBox jCheckBox33;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JCheckBox jCheckBox8;
-    private javax.swing.JCheckBox jCheckBox9;
     private javax.swing.JComboBox jComboBoxSearch;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -798,24 +891,22 @@ public class SalespersonHomeScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     public javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JToggleButton jToggleButton1;
     public javax.swing.JLabel lablePic;
     public javax.swing.JLabel name;
     public javax.swing.JLabel name1;
     public javax.swing.JLabel name2;
     public javax.swing.JLabel name3;
+    private javax.swing.JLabel total;
+    private javax.swing.JTextField txtBalance;
+    private javax.swing.JTextField txtCash;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

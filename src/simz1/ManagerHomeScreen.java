@@ -41,8 +41,10 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import jdk.management.resource.internal.TotalResourceContext;
 import net.proteanit.sql.DbUtils;
 import static simz1.LoginFrame1.mhp;
+//import java.util.Date;
 
 /**
  *
@@ -188,16 +190,16 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         BillingTable = new javax.swing.JTable();
-        btnTotal = new javax.swing.JToggleButton();
         jLabel7 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
         txtCash = new javax.swing.JTextField();
-        btnBalance = new javax.swing.JButton();
-        txtBalance = new javax.swing.JTextField();
         ItemSelecter = new javax.swing.JComboBox();
         amount = new javax.swing.JTextField();
         btnOK = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        btnBalance = new javax.swing.JButton();
+        txtBalance = new javax.swing.JTextField();
+        total = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -403,27 +405,18 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
         BillingTable.setRowHeight(20);
         jScrollPane3.setViewportView(BillingTable);
 
-        btnTotal.setText("Calculate Total");
-        btnTotal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTotalActionPerformed(evt);
-            }
-        });
-
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Cash");
 
         txtTotal.setEditable(false);
         txtTotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotal.setText("0");
 
-        btnBalance.setText("Balance");
-        btnBalance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBalanceActionPerformed(evt);
+        txtCash.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCashKeyPressed(evt);
             }
         });
-
-        txtBalance.setEditable(false);
 
         ItemSelecter.setEditable(true);
         ItemSelecter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -438,6 +431,11 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
                 amountActionPerformed(evt);
             }
         });
+        amount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                amountKeyPressed(evt);
+            }
+        });
 
         btnOK.setText("OK");
         btnOK.addActionListener(new java.awt.event.ActionListener() {
@@ -446,24 +444,23 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText(" Quantity");
+
+        btnBalance.setText("Balance");
+        btnBalance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBalanceActionPerformed(evt);
+            }
+        });
+
+        total.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total.setText("Total");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTotal, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnBalance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                    .addComponent(txtCash)
-                    .addComponent(txtBalance))
-                .addGap(31, 31, 31))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -480,6 +477,18 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
                 .addGap(273, 273, 273)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBalance, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                    .addComponent(total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                    .addComponent(txtCash)
+                    .addComponent(txtBalance))
+                .addGap(31, 31, 31))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,9 +503,11 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTotal)
-                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
@@ -505,7 +516,7 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBalance)
                     .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Transactions  ", jPanel2);
@@ -873,70 +884,222 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
         ad.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_btnAddProductActionPerformed
 
-    private void ItemSelecterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSelecterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ItemSelecterActionPerformed
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+       int quantity = 0;
+            if (amount.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "First you should select an item");
+            } else if (ItemSelecter.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Quantity field cannot be null");
+            } else {
+                quantity = Integer.parseInt(amount.getText().toString());
+                try {
+                    String txt = (String) ItemSelecter.getEditor().getItem();
+                    ResultSet rst = dbOps.getPID(txt);
+
+                    while (rst.next()) {
+                        if (rawNo != 0) {
+                            for (int i = 0; i < rawNo; i++) {    
+                                if (Integer.parseInt(BillingTable.getValueAt(i, 0).toString()) == rst.getInt(1)) {
+                                    int oldQuantity= Integer.parseInt(BillingTable.getValueAt(i, 2).toString());
+                                    int a = rst.getInt(3);
+                                    BillingTable.setValueAt(a * quantity, i, 3);
+                                    String c = rst.getString(1);
+                                    BillingTable.setValueAt(c, i, 0);
+                                    String b = rst.getString(2);
+                                    BillingTable.setValueAt(b, i, 1);
+                                    BillingTable.setValueAt(quantity, i, 2);
+                                    txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity-(oldQuantity*a)));
+                                    ItemSelecter.setSelectedIndex(-1);
+                                    amount.setText(null);
+                                    return;
+                                } 
+                            }
+                            int a = rst.getInt(3);
+                            BillingTable.setValueAt(a * quantity, rawNo, 3);
+                            txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity));
+                            String c = rst.getString(1);
+                            BillingTable.setValueAt(c, rawNo, 0);
+                            String b = rst.getString(2);
+                            BillingTable.setValueAt(b, rawNo, 1);
+                            BillingTable.setValueAt(quantity, rawNo, 2);
+                            rawNo++;
+
+                            
+
+                        } else {
+                            int a = rst.getInt(3);
+                            BillingTable.setValueAt(a * quantity, rawNo, 3);
+                            txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity));
+                            String c = rst.getString(1);
+                            BillingTable.setValueAt(c, rawNo, 0);
+                            String b = rst.getString(2);
+                            BillingTable.setValueAt(b, rawNo, 1);
+                            BillingTable.setValueAt(quantity, rawNo, 2);
+                            rawNo++;
+                        }
+                        
+                    }
+                    ItemSelecter.setSelectedIndex(-1);
+                    amount.setText(null);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error occured while the transaction");
+                }
+            }
+    }//GEN-LAST:event_btnOKActionPerformed
 
     private void amountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_amountActionPerformed
 
-    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        int quantity = 0;
-        if (amount.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "First you should select an item");     
-        }else if (ItemSelecter.getSelectedIndex()== -1){
-             JOptionPane.showMessageDialog(this, "Quantity field cannot be null");
-        } else {
-            quantity = Integer.parseInt(amount.getText().toString());
-            try {
-            String txt = (String) ItemSelecter.getEditor().getItem();
-            ResultSet rst = dbOps.getPID(txt);
-            BillingTable.setValueAt(quantity, rawNo, 2);
-            while (rst.next()) {
-                for (int i = 0; i < 3; i++) {
-                    if (i == 2) {
-                        int a = rst.getInt(i + 1);
-                        BillingTable.setValueAt(a * quantity, rawNo, i + 1);
-                    } else {
-                        String a = rst.getString(i + 1);
-                        BillingTable.setValueAt(a, rawNo, i);
+    private void ItemSelecterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSelecterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemSelecterActionPerformed
+
+    private void txtCashKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCashKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String amount = txtTotal.getText();
+            if (txtCash.getText().equals("") || txtTotal.getText().equals("")){
+                JOptionPane.showMessageDialog(this, "No text feild should be empty");
+            }else{
+                String payment = txtCash.getText();
+                int paymenti = Integer.parseInt(payment);
+                int amounti = Integer.parseInt(amount);
+                int balance = paymenti-amounti;
+                txtBalance.setText(String.valueOf(balance));
+                int result = JOptionPane.showConfirmDialog(null, "Your balance is Rs "+ String.valueOf(balance)+" Print the bill? ",null, JOptionPane.YES_NO_OPTION);
+                if(result == JOptionPane.YES_OPTION) {
+                   java.util.Date date = new java.util.Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                    String time = sdf.format(date);
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy:MM:dd");
+                    String today = sdf2.format(date);
+                    dbOps.addTransaction(time, today);
+                    int billNo=dbOps.getBillID(time, today);
+                    
+                    for (int i=0;i<rawNo;i++){
+                        int id = Integer.parseInt(BillingTable.getValueAt(i,0).toString());
+                        int quantity = Integer.parseInt(BillingTable.getValueAt(i, 2).toString());
+                        
+                        dbOps.addTransaction_2(billNo, id, quantity);
                     }
+                   for (int i = 0; i < BillingTable.getRowCount(); i++) {
+                    for (int j = 0; j < 4; j++) {
+                        BillingTable.setValueAt("", i, j);
+                    }
+                   } 
+                   txtTotal.setText("0");
+                   txtCash.setText("");
+                   txtBalance.setText("");
+                   rawNo=0;
+                }
+                
+            }
+        }
+    }//GEN-LAST:event_txtCashKeyPressed
+
+    private void amountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_amountKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int quantity = 0;
+            if (amount.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "First you should select an item");
+            } else if (ItemSelecter.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Quantity field cannot be null");
+            } else {
+                quantity = Integer.parseInt(amount.getText().toString());
+                try {
+                    String txt = (String) ItemSelecter.getEditor().getItem();
+                    ResultSet rst = dbOps.getPID(txt);
+
+                    while (rst.next()) {
+                        if (rawNo != 0) {
+                            for (int i = 0; i < rawNo; i++) {    
+                                if (Integer.parseInt(BillingTable.getValueAt(i, 0).toString()) == rst.getInt(1)) {
+                                    int oldQuantity= Integer.parseInt(BillingTable.getValueAt(i, 2).toString());
+                                    int a = rst.getInt(3);
+                                    BillingTable.setValueAt(a * quantity, i, 3);
+                                    String c = rst.getString(1);
+                                    BillingTable.setValueAt(c, i, 0);
+                                    String b = rst.getString(2);
+                                    BillingTable.setValueAt(b, i, 1);
+                                    BillingTable.setValueAt(quantity, i, 2);
+                                    txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity-(oldQuantity*a)));
+                                    ItemSelecter.setSelectedIndex(-1);
+                                    amount.setText(null);
+                                    return;
+                                } 
+                            }
+                            int a = rst.getInt(3);
+                            BillingTable.setValueAt(a * quantity, rawNo, 3);
+                            txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity));
+                            String c = rst.getString(1);
+                            BillingTable.setValueAt(c, rawNo, 0);
+                            String b = rst.getString(2);
+                            BillingTable.setValueAt(b, rawNo, 1);
+                            BillingTable.setValueAt(quantity, rawNo, 2);
+                            rawNo++;
+
+                            
+
+                        } else {
+                            int a = rst.getInt(3);
+                            BillingTable.setValueAt(a * quantity, rawNo, 3);
+                            txtTotal.setText(String.valueOf(Integer.parseInt(txtTotal.getText()) + a * quantity));
+                            String c = rst.getString(1);
+                            BillingTable.setValueAt(c, rawNo, 0);
+                            String b = rst.getString(2);
+                            BillingTable.setValueAt(b, rawNo, 1);
+                            BillingTable.setValueAt(quantity, rawNo, 2);
+                            rawNo++;
+                        }
+                        
+                    }
+                    ItemSelecter.setSelectedIndex(-1);
+                    amount.setText(null);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error occured while the transaction");
                 }
             }
-            ItemSelecter.setSelectedIndex(-1);
-            rawNo++;
-            amount.setText(null);
-            } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error occured while the transaction");
         }
-        }
-    }//GEN-LAST:event_btnOKActionPerformed
-
-    private void btnTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTotalActionPerformed
-        int total=0 ;
-        
-        for (int i=0;i<rawNo;i++){
-            int value = Integer.parseInt(BillingTable.getValueAt(i, 3).toString()) ;
-            total+= value;
-        }
-        txtTotal.setText(Integer.toString(total));
-    }//GEN-LAST:event_btnTotalActionPerformed
+    }//GEN-LAST:event_amountKeyPressed
 
     private void btnBalanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBalanceActionPerformed
-        String payment = txtCash.getText();
         String amount = txtTotal.getText();
-        if (txtCash.getText().equals("") || txtTotal.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "No text feild should be empty");
-        }else{
-            int paymenti =Integer.parseInt(payment);
-            int amounti = Integer.parseInt(amount);
-            txtBalance.setText(String.valueOf(paymenti-amounti));
-            for(int i=0;i<BillingTable.getRowCount();i++)
-                for (int j=0;j<4;j++)
-                   BillingTable.setValueAt("", i, j);
-            rawNo=0;
-        }
+            if (txtCash.getText().equals("") || txtTotal.getText().equals("")){
+                JOptionPane.showMessageDialog(this, "No text feild should be empty");
+            }else{
+                String payment = txtCash.getText();
+                int paymenti = Integer.parseInt(payment);
+                int amounti = Integer.parseInt(amount);
+                int balance = paymenti-amounti;
+                txtBalance.setText(String.valueOf(balance));
+                int result = JOptionPane.showConfirmDialog(null, "Your balance is Rs "+ String.valueOf(balance)+" Print the bill? ",null, JOptionPane.YES_NO_OPTION);
+                if(result == JOptionPane.YES_OPTION) {
+                   java.util.Date date = new java.util.Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                    String time = sdf.format(date);
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy:MM:dd");
+                    String today = sdf2.format(date);
+                    dbOps.addTransaction(time, today);
+                    int billNo=dbOps.getBillID(time, today);
+                    
+                    for (int i=0;i<rawNo;i++){
+                        int id = Integer.parseInt(BillingTable.getValueAt(i,0).toString());
+                        int quantity = Integer.parseInt(BillingTable.getValueAt(i, 2).toString());
+                        
+                        dbOps.addTransaction_2(billNo, id, quantity);
+                    }
+                   for (int i = 0; i < BillingTable.getRowCount(); i++) {
+                    for (int j = 0; j < 4; j++) {
+                        BillingTable.setValueAt("", i, j);
+                    }
+                   } 
+                   txtTotal.setText("0");
+                   txtCash.setText("");
+                   txtBalance.setText("");
+                   rawNo=0;
+                }
+                
+            }
     }//GEN-LAST:event_btnBalanceActionPerformed
 
     /**
@@ -1018,7 +1181,6 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnRemoveUser;
     private javax.swing.JButton btnSetStock;
-    private javax.swing.JToggleButton btnTotal;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -1047,6 +1209,7 @@ public class ManagerHomeScreen extends javax.swing.JFrame {
     private javax.swing.JButton resetBtn;
     private javax.swing.JTable tableProduct;
     public javax.swing.JTable tblUsers;
+    private javax.swing.JLabel total;
     private javax.swing.JTextField txtBalance;
     private javax.swing.JTextField txtCash;
     private javax.swing.JTextField txtTotal;

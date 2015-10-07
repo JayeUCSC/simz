@@ -5,11 +5,15 @@
  */
 package simz1;
 
+import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
+import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import static simz1.ManagerHomeScreen.resizeImageIcon;
 
 /**
@@ -54,6 +58,7 @@ public class LoginFrame1 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusable(false);
+        setPreferredSize(new java.awt.Dimension(737, 589));
         getContentPane().setLayout(null);
 
         jLabel1.setText("User Name");
@@ -120,6 +125,7 @@ public class LoginFrame1 extends javax.swing.JFrame {
         jLabel4.setBounds(320, 220, 100, 110);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/simz1/background1.jpg"))); // NOI18N
+        jLabel3.setPreferredSize(null);
         getContentPane().add(jLabel3);
         jLabel3.setBounds(0, 0, 740, 590);
 
@@ -253,27 +259,19 @@ public class LoginFrame1 extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
+                try {
+                    UIManager.setLookAndFeel(new HiFiLookAndFeel());
+
+                } catch (Exception e) {
+                    System.out.println("e");
+                }
                 new LoginFrame1().setVisible(true);
             }
         });

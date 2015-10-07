@@ -855,4 +855,99 @@ public class DBOperations {
         }
         return null;
     }
+    
+        boolean addTransaction(String time, String date) {
+        try {
+            con = (Connection) DriverManager.getConnection(url, username, password);//get the connection
+            String query = "INSERT INTO transaction_main  VALUES(?,?,?)";
+            pst = (PreparedStatement) con.prepareStatement(query);
+
+            pst.setInt(1, 0);//add values to the sql query
+            pst.setString(2, time);//add values to the sql query
+            pst.setString(3, date);
+
+            pst.executeUpdate();//execute the sql query and insert the values to the db table
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        } finally {
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+
+    }
+        
+    int getBillID(String time, String date) {
+        try {
+            con = (Connection) DriverManager.getConnection(url, username, password);//get the connection
+            String query = "SELECT Bill_no FROM transaction_main WHERE Time=? AND Date = ?";
+            pst = (PreparedStatement) con.prepareStatement(query);
+            pst.setString(1, time);//add values to the sql query
+            pst.setString(2, date);
+            rs = pst.executeQuery();//execute the sql query and get the result
+            while (rs.next()) {
+                int BID = rs.getInt(1);
+                return BID;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            return -1;
+        } finally {
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+        return -1;
+    }
+    
+    boolean addTransaction_2(int billNo,int pId, int quantity) {
+        try {
+            con = (Connection) DriverManager.getConnection(url, username, password);//get the connection
+            String query = "INSERT INTO transaction_2  VALUES(?,?,?)";
+            pst = (PreparedStatement) con.prepareStatement(query);
+
+            pst.setInt(1, billNo);//add values to the sql query
+            pst.setInt(2, pId);//add values to the sql query
+            pst.setInt(3, quantity);
+
+            pst.executeUpdate();//execute the sql query and insert the values to the db table
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        } finally {
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+
+    }
+
 }
+
